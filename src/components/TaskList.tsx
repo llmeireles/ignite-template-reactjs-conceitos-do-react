@@ -17,8 +17,10 @@ export function TaskList() {
 
   function handleCreateNewTask() {
     // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
-    if(newTaskTitle != '')
+    //Modelo 1:
+    /*if(newTaskTitle != '')
     {
+      
       const newTasks : Task[] = [...tasks,
                                   {
                                     id:Math.floor(Math.random() * 1000000),
@@ -27,31 +29,56 @@ export function TaskList() {
                                   }
                               ];
       setTasks(newTasks);
-      setNewTaskTitle('');
+    }*/
+
+    //Modelo 2:
+    if(!newTaskTitle) return;
+
+    const newTask ={
+      id:Math.floor(Math.random() * 1000000),
+      title:newTaskTitle,
+      isComplete:false
     }
+    setTasks(oldValue=> [...oldValue,newTask]);
+
+
+    setNewTaskTitle('');
+    
     
   }
 
   function handleToggleTaskCompletion(id: number) {
     // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
-      let newTasks : Task[] = [];
+    //Modelo 1:
+     /* let newTasks : Task[] = [];
       tasks.forEach(task=>{
           if(task.id === id)
             task.isComplete = !task.isComplete;
           
           newTasks.push(task);
       })
+    setTasks(newTasks);*/
+
+    //Modelo 2
+    const newTasks = tasks.map(task=> task.id === id ? {
+      ...task,
+      isComplete: !task.isComplete
+    }: task);
+
     setTasks(newTasks);
   }
 
   function handleRemoveTask(id: number) {
     // Remova uma task da listagem pelo ID
-
-    let newTasks : Task[] = [];
+    //Modelo 1:
+    /*let newTasks : Task[] = [];
       tasks.forEach(task=>{
           if(task.id != id)
             newTasks.push(task);
-      })
+      })*/
+    
+    //Modelo 2
+    const newTasks = tasks.filter(filter=> filter.id != id);
     setTasks(newTasks);
   }
 
@@ -70,7 +97,6 @@ export function TaskList() {
           <button type="submit" data-testid="add-task-button" onClick={handleCreateNewTask}>
             <FiCheckSquare size={16} color="#fff"/>
           </button>
-          {console.log(tasks)}
         </div>
       </header>
 
